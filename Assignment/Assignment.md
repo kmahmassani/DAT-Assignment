@@ -166,5 +166,55 @@ WHERE NOT EXISTS
 ### d) All bikes which started at the same dock on 2 consecutive days
 
  ```sql
-
+SELECT *
+FROM BIKES b 
+INNER JOIN Journeys j on b.opercode = j.bikeopercode AND b.operbikeid = j.bikeoperbikeid
+INNER JOIN Docks d on j.destdock = d.id
+WHERE EXISTS (SELECT 1 
+			  FROM Journeys j2 
+			  WHERE j2.bikeopercode = j.bikeopercode AND j2.bikeoperbikeid = j.bikeoperbikeid
+			  AND j2.startdock = j.startdock
+			  AND j2.starttime::date = j.starttime::date + INTERVAL '1 day')
 ```
+
+### e) All docks where at least two bikes started from
+
+ ```sql
+WITH CTE AS (SELECT DISTINCT bikeopercode, bikeoperbikeid, startdock FROM Journeys) -- get all the bikes that have ever used the dock, removing duplicate rows
+SELECT startdock AS dockid, COUNT(*)
+FROM CTE
+GROUP BY startdock
+HAVING COUNT(*) > 1
+--for simplicity, I have left out retrieving the rest of the Dock data, but this can be gotten via a simple inner join between cte and the docks table in the final query
+ ```
+
+### f) Top 10 busiest docks
+
+ ```sql
+SELECT d.*, COUNT(*)
+FROM Journeys j
+INNER JOIN Docks d on destdock = d.id
+GROUP BY destdock
+ORDER BY COUNT(*) DESC
+LIMIT 10
+  ```
+
+### g) Docks reached by Santander bike "4928302" from dock "UK-London-231"
+
+ ```sql
+WITH RECURSIVE paths(destdock, endtime) AS (
+		SELECT destdock, endtime 
+		FROM Journeys
+		INNER JOIN Operators o ON Journeys.bikeopercode = o.code
+		WHERE Journeys.startdock = 'UK-London-231' AND o.name = 'Santander Cycles London' AND Journeys.bikeoperbikeid = '4928302'
+	UNION ALL
+		SELECT j.destdock, j.endtime 
+		FROM paths p, Journeys j
+		WHERE j.startdock = p.destdock 
+		AND j.starttime > p.endtime -- to make sure we dont go back in time
+	)
+
+SELECT destdock
+FROM paths
+--for simplicity, I have left out retrieving the rest of the Dock data, but this can be gotten via a simple inner join between paths and the docks table in the final query
+ ```
