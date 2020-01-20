@@ -343,11 +343,11 @@ We can obtain and enrich our data with:
 
 ### 3. Data Selection and Preparation
 
-#### We suspect that:
-  * Initial bike distribution and Journeys to calculate each docks availability
-  * the time of day to be of importance because of daily commutes effect on usage
-  * the location zone also because of return trip daily commutes (residential → commercial and vice versa)
-  * the date and weather, because people may enjoy riding in moderate weather, yet choose the tube for very cold or very hot weather
+#### We suspect that we need:
+  * Initial bike distribution and Journeys to calculate each dock's availability
+  * The time of day because of daily commutes effect on usage
+  * The location zone also because of return trip daily commutes (residential → commercial and vice versa)
+  * The date and weather, because people may enjoy riding in moderate weather, yet choose the tube for very cold or very hot weather
 
 #### We clean the data by:
   * Removing weather data from before the ShareBike system was operational
