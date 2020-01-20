@@ -125,6 +125,47 @@ CREATE TABLE Journeys (
 
 	#### ✓ BCNF because each FD originates from a Super/Candidate Key
 
+  * ### Docks
+    | Id     | OperCode | CityId | Latitude  | Longitude | HasElectric |
+    | ------ | -------- | ------ | --------- | --------- | ----------- |
+    | Dock-1 | 1        | 22     | 51.507664 | -0.127777 | No          |
+    | Dock-2 | 1        | 22     | 51.512018 | -0.131817 | No          |
+    | Dock-3 | 2        | 23     | 51.755545 | -1.260049 | No          |
+    | Dock-4 | 3        | 23     | 51.755545 | -1.260296 | Yes         |
+    | Dock-5 | 2        | 23     | 51.895545 | -1.260296 | Yes         |
+
+    #### Candidate Keys:
+	 
+	 * { Id }
+	 * { CityId, Latitude, Longitude }
+
+	#### Non-Trivial FDs:
+
+	 * { Id }	→ { OperCode, CityId, Latitude, Longitude, HasElectric }
+	 * { CityId, Latitude, Longitude }	→	{ Id, OperCode, CityId, HasElectric }
+  
+    #### ✓ BCNF because each FD originates from a Super/Candidate Key
+
+  * ### Citys
+    | Id  | Country | City     |
+    | --- | ------- | -------- |
+    | 22  | UK      | London   |
+    | 23  | UK      | Oxford   |
+    | 24  | USA     | London   |
+    | 24  | USA     | New York |
+
+    #### Candidate Keys:
+	 
+	 * { Id }
+	 * { Country, City }
+
+    #### Non-Trivial FDs:
+
+	 * { Id }	→ { Country, City }
+	 * { Country, City }	→	{ Id }
+   
+    #### ✓ BCNF because each FD originates from a Super/Candidate Key
+
 ### c)
 
 #### C1: All docks with lat > 90
