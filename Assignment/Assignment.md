@@ -123,6 +123,8 @@ CREATE TABLE Journeys (
 	 * { BikeOperCode, BikeOperBikeId, StartTime }	→	{ StartDock, DestDock, EndTime }
 	 * { BikeOperCode, BikeOperBikeId, EndTime }	→	{ StartDock, StartTime, DestDock }
 
+	#### ✓ BCNF because each FD originates from a Super/Candidate Key
+
 ### c)
 
 #### C1: All docks with lat > 90
