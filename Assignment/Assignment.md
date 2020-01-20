@@ -8,7 +8,7 @@
 --Operators table contains all the operator codes, along with their names.  Names are unique for each operator
 CREATE TABLE Operators (
 	Code INT PRIMARY KEY,
-	Name VARCHAR(100) UNIQUE
+	Name VARCHAR(100) NOT NULL UNIQUE
 );
 
 -- BikeType allows us to constrain the type of bikes allowed to either Manual or Electric
@@ -62,7 +62,56 @@ CREATE TABLE Journeys (
 
 ### b)
 
-### TODO
+>A relation, R, is in BCNF iff for every nontrivial FD (X->A) satisfied by R the following condition is true:
+>(a) X is a superkey for R
+
+  * #### Operators
+    | Code | Name          |
+    | ---- | ------------- |
+    | 1    | Santandar     |
+    | 2    | Oxford Bikes  |
+    | 3    | London Cycles |
+
+	#### Candidate Keys:
+	
+	 * { Code }
+	 * { Name }
+
+	##### Non-Trivial FDs:
+	 
+	 * { Code }	→	{ Name }   
+	 * { Name }	→	{ Code }
+
+	#### ✓ BCNF because each FD originates from a Super/Candidate Key
+
+
+  * ### Bikes
+    | OperCode | OperBikeId | BikeType | Capacity |
+    | -------- | ---------- | -------- | -------- |
+    | 1        | AB-1       | Manual   | NULL     |
+    | 1        | AB-2       | Manual   | NULL     |
+    | 1        | AB-3       | Electric | 100      |
+    | 2        | AB-1       | Manual   | NULL     |
+    | 2        | CD-1       | Electric | 95       |
+    | 2        | CD-3       | Electric | 100      |
+
+	#### Candidate Keys:
+	
+	 * { Opercode, OperBikeId }
+
+	#### Non-Trivial FDs:
+
+	 * { Opercode, OperBikeId }	→	{ BikeType,Capacity }
+
+	#### ✓ BCNF because each FD originates from a Super/Candidate Key
+
+  * ### Journeys
+    | BikeOperCode | BikeOperBikeId | StartDock | StartTime        | DestDock | EndTime          |
+    | ------------ | -------------- | --------- | ---------------- | -------- | ---------------- |
+    | 1            | AB-1           | Dock-1    | 2020-01-01 09:00 | Dock-2   | 2020-01-01 09:30 |
+    | 1            | AB-2           | Dock-1    | 2020-01-01 09:00 | Dock-2   | 2020-01-01 09:30 |
+    | 2            | AB-1           | Dock-3    | 2020-01-01 09:00 | Dock-2   | 2020-01-01 09:30 |
+    | 1            | AB-1           | Dock-2    | 2020-01-02 09:00 | Dock-4   | 2020-01-01 09:30 |
 
 ### c)
 
