@@ -1,6 +1,6 @@
 ## Question 1:
 
-### a)
+### A)
 
 ![ER Diagram](relationships.real.large.png)
 
@@ -60,7 +60,7 @@ CREATE TABLE Journeys (
 );
 ```
 
-### b)
+### B)
 
 >A relation, R, is in BCNF iff for every nontrivial FD (X->A) satisfied by R the following condition is true:
 >(a) X is a superkey for R
@@ -72,7 +72,7 @@ CREATE TABLE Journeys (
     | 2    | Oxford Bikes  |
     | 3    | London Cycles |
 
-	#### Candidate Keys:
+	#### Super/Candidate Keys:
 	
 	 * { Code }
 	 * { Name }
@@ -95,7 +95,7 @@ CREATE TABLE Journeys (
     | 2        | CD-1       | Electric | 95       |
     | 2        | CD-3       | Electric | 100      |
 
-	#### Candidate Keys:
+	#### Super/Candidate Keys:
 	
 	 * { Opercode, OperBikeId }
 
@@ -113,7 +113,7 @@ CREATE TABLE Journeys (
     | 2            | AB-1           | Dock-3    | 2020-01-01 09:00 | Dock-2   | 2020-01-01 09:30 |
     | 1            | AB-1           | Dock-2    | 2020-01-02 09:00 | Dock-4   | 2020-01-02 10:30 |
 
-	#### Candidate Keys:
+	#### Super/Candidate Keys:
 
 	 * { BikeOperCode, BikeOperBikeId, StartTime }
 	 * { BikeOperCode, BikeOperBikeId, EndTime }
@@ -134,7 +134,7 @@ CREATE TABLE Journeys (
     | Dock-4 | 3        | 23     | 51.755545 | -1.260296 | Yes         |
     | Dock-5 | 2        | 23     | 51.895545 | -1.260296 | Yes         |
 
-    #### Candidate Keys:
+    #### Super/Candidate Keys:
 	 
 	 * { Id }
 	 * { CityId, Latitude, Longitude }
@@ -154,7 +154,7 @@ CREATE TABLE Journeys (
     | 24  | USA     | London   |
     | 24  | USA     | New York |
 
-    #### Candidate Keys:
+    #### Super/Candidate Keys:
 	 
 	 * { Id }
 	 * { Country, City }
@@ -166,7 +166,7 @@ CREATE TABLE Journeys (
    
     #### ✓ BCNF because each FD originates from a Super/Candidate Key
 
-### c)
+### C)
 
 #### C1: All docks with lat > 90
 
@@ -203,37 +203,37 @@ We cannot create an SQL Constraint statement to stop electric bikes from docking
 
 ## Question 2:
 
-### a) All bikes with Operator "Santander Cycles London"
+### A) All bikes with Operator "Santander Cycles London"
 
 π<sub>OperCode,OperBikeID,BikeType,Capacity</sub>(Bikes ⋈ π<sub>OperCode</sub>(σ<sub>name~'Santander Cycles London'</sub>(Operators)))
 
-### b) All bikes with Journeys ending at "UK-Oxford-536" or "UK-Oxford-435"
+### B) All bikes with Journeys ending at "UK-Oxford-536" or "UK-Oxford-435"
 
 ```{ (oCode, oBike, t, c) | Bikes(oCode, oBike, t, c) ∧ (Journeys(oCode, oBike, sd, st, "UK-Oxford-536", et) ∨ Journeys(oCode, oBike, sd1, st1, "UK-Oxford-435", et1)) ) }```
 
-### c) All bikes which have never travelled to "UK-London-116"
+### C) All bikes which have never travelled to "UK-London-116"
 
 ```{ (oCode, oBike, t, c) | Bikes(oCode, oBike, t, c) ∧ ¬Journeys(oCode, oBike, sd, st, "UK-London-116", et) }```
 
-### d) All bikes which started at the same dock on 2 consecutive days
+### D) All bikes which started at the same dock on 2 consecutive days
 
 ```{ (oCode, oBike, t, c) | Bikes(oCode, oBike, t, c) ∧ Journeys(oCode, oBike, sd, st, ed, et) ∧ Journeys(oCode, oBike, sd, st + 1, ed1, et1)}```
 
-### e) All docks where at least two bikes started from
+### E) All docks where at least two bikes started from
 
 ````{ (dockId, oCode, c, la, lo, ele) | Docks(dockId, oCode, c, la, lo, ele) ∧ Journeys(oCode1, oBike1, dockId, st, ed, et) ∧ Journeys(oCode2, oBike2, dockId, st2, ed2, et2) ∧ ((oCode1 ≠ oCode2) ∨ (oBike1 ≠ oBike2)) }````
 
-### f) Top 10 busiest docks
+### F) Top 10 busiest docks
 
 We cannot express this relation as there is no operator to count (or other aggregate functions) the number of journeys ending at each dock.
 
-### g) Docks reached from "UK-London-231" by Santandar bike "4928302"
+### G) Docks reached from "UK-London-231" by Santandar bike "4928302"
 
 We cannot express this relation as there is no upper bound to the number of journeys.  If there was an upper bound such as *n*, we could just join up to *n* times on the Journeys relation.
 
 ## Question 3:
 
-### a) All bikes with Operator "Santander Cycles London"
+### A) All bikes with Operator "Santander Cycles London"
 
  ```sql
  SELECT *
@@ -242,7 +242,7 @@ INNER JOIN OPERATORS o on b.opercode = o.code
 WHERE o.name = 'Santander Cycles London'
 ```
 
-### b) All bikes with Journeys ending at "UK-Oxford-536" or "UK-Oxford-435"
+### B) All bikes with Journeys ending at "UK-Oxford-536" or "UK-Oxford-435"
 
  ```sql
 SELECT *
@@ -252,7 +252,7 @@ INNER JOIN Docks d on j.destdock = d.id
 WHERE d.id in ('UK-Oxford-536','UK-Oxford-435')
 ```
 
-### c) All bikes which have never travelled to "UK-London-116"
+### C) All bikes which have never travelled to "UK-London-116"
 
  ```sql
 SELECT *
@@ -265,7 +265,7 @@ WHERE NOT EXISTS
                  AND d.id = 'UK-London-116')
 ```
 
-### d) All bikes which started at the same dock on 2 consecutive days
+### D) All bikes which started at the same dock on 2 consecutive days
 
  ```sql
 SELECT *
@@ -279,7 +279,7 @@ WHERE EXISTS (SELECT 1
 			  AND j2.starttime::date = j.starttime::date + INTERVAL '1 day')
 ```
 
-### e) All docks where at least two bikes started from
+### E) All docks where at least two bikes started from
 
  ```sql
 WITH CTE AS (SELECT DISTINCT bikeopercode, bikeoperbikeid, startdock FROM Journeys) -- get all the bikes that have ever used the dock, removing duplicate rows
@@ -290,7 +290,7 @@ HAVING COUNT(*) > 1
 --for simplicity, I have left out retrieving the rest of the Dock data, but this can be gotten via a simple inner join between cte and the docks table in the final query
  ```
 
-### f) Top 10 busiest docks
+### F) Top 10 busiest docks
 
  ```sql
 SELECT d.*, COUNT(*)
@@ -301,7 +301,7 @@ ORDER BY COUNT(*) DESC
 LIMIT 10
   ```
 
-### g) Docks reached by Santander bike "4928302" from dock "UK-London-231"
+### G) Docks reached by Santander bike "4928302" from dock "UK-London-231"
 
  ```sql
 WITH RECURSIVE paths(destdock, endtime) AS (
@@ -320,3 +320,64 @@ SELECT destdock
 FROM paths
 --for simplicity, I have left out retrieving the rest of the Dock data, but this can be gotten via a simple inner join between paths and the docks table in the final query
  ```
+
+## Question 4:
+
+We will approach the task with 4 phases:
+
+### 1. Business understanding
+
+ The goal of the datamining task will be to identify gaps in bike availibility. The two least diserable states for a dock is completely full or completely empty, i.e. no where to park or no bikes to use.  If a model can be found to accurately predict these two states, bikes may be moved from full docks to empty ones to rebalance between places to park and bikes that can be taken.
+
+### 2. Data understanding
+
+We have:
+  * Dock locations and capacities (we are assuming that all docks have the same capacity, or that capacity is added to the docks table)
+  * Journeys data to and from docks, along with start and end dates and times
+  * Bike types used (Manual/Electric)
+
+We can obtain and enrich our data with:
+  * Location zone data (industrial/commerical/residential areas)
+  * Historical Weather data
+  * Initial bike distribution
+
+### 3. Data Selection and Preparation
+
+#### We suspect that:
+  * Initial bike distribution and Journeys to calculate each docks availibility
+  * the time of day to be of importance because of daily commutes affect on usage
+  * the location zone also because of return trip daily commutes (residential → commercial and vice versa)
+  * the date and weather, because people may enjoy riding in moderate weather, yet choose the tube for very cold or very hot weather
+
+#### We clean the data by:
+  * Removing weather data from before the ShareBike system was operational
+  * Any journey data without and end (bike probably stolen)
+  * Any journey data with a bike starting or ending at an incompatible dock
+  * Zones without docks
+
+#### We construct data by:
+  * Removing year from date (doesn't repeat so not of use), and splitting out into Month, Day, Time of Day fields.
+  * Categorizing weather conditions and temperature into a few clusters such as (Wet, Sunny, Cloudy) along with (Freezing, Cold, Warm, Hot)
+
+#### We merge and integrate data by:
+  * Writing a query that sums Initial bike distribution and groups journeys by docks and date+time, creating the number of bikes available at each dock at any given time.
+  * We then join on the weather conditions and temperature at each given time.
+  * We then join on the location info.
+
+This should give us one wide table that contains the number of bikes at each dock at any given moment in time, along with the corresponding weather conditions and dock zone.
+
+#### We model by:
+  * Choosing predictive modelling, as we would like to predict dock's bike availability in the future.
+  * We must split the data into a learning set and a test set. We must be careful about how we do this split, as we only have one year of data, i.e. we don't have repeating seasons. So we might try to split it to get a good mix of weather conditions, days of the week, and location info in each set. We must also choose a split percentage, e.g. 70% learning and 30% test.
+  * The learning set will have the dock's bike availibility included, while the test set will have this value excluded.
+  * We run the data through the tool of our choice (e.g. weka) along with the model setting of our choice (continuous/regression)
+
+#### We evaluate our models by:
+  * Performing and ROC anaylsis.  Which model has greater test-set accuracy? Is a false-positive more costly than a true-negative (Is it worse to have no parking spaces or no bikes available for use?).  We then plot these models on a graph against the ratio of true-positive vs false-positive rate and compare their respective cost to profit ratios.
+   ![ROC](ROC.png)
+
+### We then deploy our plan by:
+  * "Rebalancing" bikes (moving them from a full to empty dock) according to predictions by our model.
+  * Evaluating if this then results in less docks in full/empty states.
+  * Adjusting the model for greater accuracy as needed as more data becomes available over time. 
+
