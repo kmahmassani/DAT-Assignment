@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<database name="DAT" schema="public" type="PostgreSQL - 12.1">
+   <tables>
+      <table name="bikes" numRows="0" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="opercode" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <child column="bikeopercode" foreignKey="journeys_bikeopercode_bikeoperbikeid_fkey" implied="false" onDeleteCascade="false" schema="public" table="journeys"/>
+            <parent column="code" foreignKey="bikes_opercode_fkey" implied="false" onDeleteCascade="false" schema="public" table="operators"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="operbikeid" nullable="false" remarks="" size="100" type="varchar" typeCode="12">
+            <child column="bikeoperbikeid" foreignKey="journeys_bikeopercode_bikeoperbikeid_fkey" implied="false" onDeleteCascade="false" schema="public" table="journeys"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="biketype" nullable="false" remarks="" size="2147483647" type="biketype" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="capacity" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <primaryKey column="opercode" sequenceNumberInPK="1"/>
+         <primaryKey column="operbikeid" sequenceNumberInPK="2"/>
+         <index name="bikes_pkey" unique="true">
+            <column ascending="true" name="opercode"/>
+            <column ascending="true" name="operbikeid"/>
+         </index>
+      </table>
+      <table name="citys" numRows="0" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <child column="cityid" foreignKey="docks_cityid_fkey" implied="false" onDeleteCascade="false" schema="public" table="docks"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="country" nullable="false" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="city" nullable="false" remarks="" size="100" type="varchar" typeCode="12"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="citys_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="citys_country_city_key" unique="true">
+            <column ascending="true" name="country"/>
+            <column ascending="true" name="city"/>
+         </index>
+      </table>
+      <table name="docks" numRows="0" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="" size="100" type="varchar" typeCode="12">
+            <child column="destdock" foreignKey="journeys_destdock_fkey" implied="false" onDeleteCascade="false" schema="public" table="journeys"/>
+            <child column="startdock" foreignKey="journeys_startdock_fkey" implied="false" onDeleteCascade="false" schema="public" table="journeys"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="opercode" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="code" foreignKey="docks_opercode_fkey" implied="false" onDeleteCascade="false" schema="public" table="operators"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="cityid" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="id" foreignKey="docks_cityid_fkey" implied="false" onDeleteCascade="false" schema="public" table="citys"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="17" id="3" name="latitude" nullable="false" remarks="" size="17" type="float8" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="17" id="4" name="longitude" nullable="false" remarks="" size="17" type="float8" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="haselectric" nullable="false" remarks="" size="1" type="bool" typeCode="-7"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="docks_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="journeys" numRows="0" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="bikeopercode" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="opercode" foreignKey="journeys_bikeopercode_bikeoperbikeid_fkey" implied="false" onDeleteCascade="false" schema="public" table="bikes"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="bikeoperbikeid" nullable="false" remarks="" size="100" type="varchar" typeCode="12">
+            <parent column="operbikeid" foreignKey="journeys_bikeopercode_bikeoperbikeid_fkey" implied="false" onDeleteCascade="false" schema="public" table="bikes"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="startdock" nullable="false" remarks="" size="100" type="varchar" typeCode="12">
+            <parent column="id" foreignKey="journeys_startdock_fkey" implied="false" onDeleteCascade="false" schema="public" table="docks"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="3" name="starttime" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="destdock" nullable="true" remarks="" size="100" type="varchar" typeCode="12">
+            <parent column="id" foreignKey="journeys_destdock_fkey" implied="false" onDeleteCascade="false" schema="public" table="docks"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="5" name="endtime" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <primaryKey column="bikeopercode" sequenceNumberInPK="1"/>
+         <primaryKey column="bikeoperbikeid" sequenceNumberInPK="2"/>
+         <primaryKey column="starttime" sequenceNumberInPK="3"/>
+         <index name="journeys_pkey" unique="true">
+            <column ascending="true" name="bikeopercode"/>
+            <column ascending="true" name="bikeoperbikeid"/>
+            <column ascending="true" name="starttime"/>
+         </index>
+      </table>
+      <table name="operators" numRows="0" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <child column="opercode" foreignKey="bikes_opercode_fkey" implied="false" onDeleteCascade="false" schema="public" table="bikes"/>
+            <child column="opercode" foreignKey="docks_opercode_fkey" implied="false" onDeleteCascade="false" schema="public" table="docks"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="name" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <primaryKey column="code" sequenceNumberInPK="1"/>
+         <index name="operators_pkey" unique="true">
+            <column ascending="true" name="code"/>
+         </index>
+         <index name="operators_name_key" unique="true">
+            <column ascending="true" name="name"/>
+         </index>
+      </table>
+   </tables>
+</database>
