@@ -327,7 +327,7 @@ We will approach the task with 4 phases:
 
 ### 1. Business understanding
 
- The goal of the datamining task will be to identify gaps in bike availibility. The two least diserable states for a dock is completely full or completely empty, i.e. no where to park or no bikes to use.  If a model can be found to accurately predict these two states, bikes may be moved from full docks to empty ones to rebalance between places to park and bikes that can be taken.
+ The goal of the datamining task will be to identify gaps in bike availability. The two least desirable states for a dock are completely full or completely empty, i.e. nowhere to park or no bikes to use.  If a model can be found to accurately predict these two states, bikes may be moved from full docks to empty ones to rebalance between places to park and bikes that can be taken.
 
 ### 2. Data understanding
 
@@ -337,15 +337,15 @@ We have:
   * Bike types used (Manual/Electric)
 
 We can obtain and enrich our data with:
-  * Location zone data (industrial/commerical/residential areas)
+  * Location zone data (industrial/commercial/residential areas)
   * Historical Weather data
   * Initial bike distribution
 
 ### 3. Data Selection and Preparation
 
 #### We suspect that:
-  * Initial bike distribution and Journeys to calculate each docks availibility
-  * the time of day to be of importance because of daily commutes affect on usage
+  * Initial bike distribution and Journeys to calculate each docks availability
+  * the time of day to be of importance because of daily commutes effect on usage
   * the location zone also because of return trip daily commutes (residential → commercial and vice versa)
   * the date and weather, because people may enjoy riding in moderate weather, yet choose the tube for very cold or very hot weather
 
@@ -368,16 +368,17 @@ This should give us one wide table that contains the number of bikes at each doc
 
 #### We model by:
   * Choosing predictive modelling, as we would like to predict dock's bike availability in the future.
-  * We must split the data into a learning set and a test set. We must be careful about how we do this split, as we only have one year of data, i.e. we don't have repeating seasons. So we might try to split it to get a good mix of weather conditions, days of the week, and location info in each set. We must also choose a split percentage, e.g. 70% learning and 30% test.
-  * The learning set will have the dock's bike availibility included, while the test set will have this value excluded.
+  * We must split the data into a learning set and a test set. We must be careful about how we do this split, as we only have one year of data, i.e. we don't have repeating seasons. So, we might try to split it to get a good mix of weather conditions, days of the week, and location info in each set. We must also choose a split percentage, e.g. 70% learning and 30% test.
+  * The learning set will have the dock's bike availability included, while the test set will have this value excluded.
   * We run the data through the tool of our choice (e.g. weka) along with the model setting of our choice (continuous/regression)
 
 #### We evaluate our models by:
-  * Performing and ROC anaylsis.  Which model has greater test-set accuracy? Is a false-positive more costly than a true-negative (Is it worse to have no parking spaces or no bikes available for use?).  We then plot these models on a graph against the ratio of true-positive vs false-positive rate and compare their respective cost to profit ratios.
+  * Performing and ROC analysis.  Which model has greater test-set accuracy? Is a false-positive more costly than a true-negative (Is it worse to have no parking spaces or no bikes available for use?).  We then plot these models on a graph against the ratio of true-positive vs false-positive rate and compare their respective cost to profit ratios.
    ![ROC](ROC.png)
 
 ### We then deploy our plan by:
   * "Rebalancing" bikes (moving them from a full to empty dock) according to predictions by our model.
   * Evaluating if this then results in less docks in full/empty states.
-  * Adjusting the model for greater accuracy as needed as more data becomes available over time. 
+  * Adjusting the model for greater accuracy as needed as more data becomes available over time.
+
 
