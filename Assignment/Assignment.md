@@ -111,7 +111,17 @@ CREATE TABLE Journeys (
     | 1            | AB-1           | Dock-1    | 2020-01-01 09:00 | Dock-2   | 2020-01-01 09:30 |
     | 1            | AB-2           | Dock-1    | 2020-01-01 09:00 | Dock-2   | 2020-01-01 09:30 |
     | 2            | AB-1           | Dock-3    | 2020-01-01 09:00 | Dock-2   | 2020-01-01 09:30 |
-    | 1            | AB-1           | Dock-2    | 2020-01-02 09:00 | Dock-4   | 2020-01-01 09:30 |
+    | 1            | AB-1           | Dock-2    | 2020-01-02 09:00 | Dock-4   | 2020-01-02 10:30 |
+
+	#### Candidate Keys:
+
+	 * { BikeOperCode, BikeOperBikeId, StartTime }
+	 * { BikeOperCode, BikeOperBikeId, EndTime }
+
+	#### Non-Trivial FDs:
+	 
+	 * { BikeOperCode, BikeOperBikeId, StartTime }	→	{ StartDock, DestDock, EndTime }
+	 * { BikeOperCode, BikeOperBikeId, EndTime }	→	{ StartDock, StartTime, DestDock }
 
 ### c)
 
